@@ -39,5 +39,15 @@ end
 exec Group2.usp_UpdateCustomer
 
 
+--search policy- existing policy details
+create proc Group2.usp_SearchPolicy
+@cID int,
+@cName varchar(30),
+@cPolicyNumber int,
+@cDOB DateTime
+AS
+BEGIN
+select * from Group2.Endorsements where (policyNumber=@cPolicyNumber and  customerDOB=@cDOB and (customerID=@cID or customerName=@cName))
+END
 
 
