@@ -1,0 +1,54 @@
+create proc Group2.usp_ViewDetails
+@cID int
+as
+begin
+
+Select * from Group2.Endorsements where customerID=@cID
+end
+
+exec Group2.usp_ViewDetails
+
+
+
+--update procedure for customer
+
+create proc Group2.usp_UpdateCustomer
+@ccustomerID int,
+@cpolicyNumber int,
+@cpolicyName varchar(30),
+@cproductLine varchar(200),
+@cName varchar(30),
+@cAddress varchar(50),
+@cPh varchar(12),
+@cnomineeName varchar(30),
+@cnomineeRelation varchar(20),
+@cDOB DateTime,
+@cGender char,
+@cSmoking varchar(20),
+@cpremiumFrequency varchar(20)
+
+as
+begin 
+SET IDENTITY_INSERT Group2.EndorsementsTemp  ON
+insert into Group2.EndorsementsTemp
+ (customerID, policyNumber, policyName,productLine, customerName,customerAddress,customerTelephone,customerGender,customerDOB,customerSmoking,nomineeName,nomineeRelation,premiumFrequency)
+ values
+ (@ccustomerID,@cpolicyNumber,@cpolicyName,@cproductLine,@cName,@cAddress,@cPh,@cGender,@cDOB,@cSmoking,@cnomineeName,@cnomineeRelation,@cpremiumFrequency)
+end
+
+exec Group2.usp_UpdateCustomer
+
+
+--search existing policy details
+
+create proc Group2.usp_SearchPolicy
+@cID int,
+@cName varchar(30),
+@cPolicyNumber int,
+@cDOB DateTime
+AS
+BEGIN
+select * from Group2.Endorsements where (policyNumber=@cPolicyNumber and  customerDOB=@cDOB and (customerID=@cID or customerName=@cName))
+END
+
+exec Group2.usp_SearchPolicy
